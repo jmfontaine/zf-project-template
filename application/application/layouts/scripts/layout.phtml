@@ -1,0 +1,43 @@
+<?php echo $this->doctype('HTML4_STRICT') ?>
+<html lang="fr">
+    <head>
+        <?php
+        // Balises Meta
+        $this->headMeta()->appendName('robots', 'noindex,nofollow')
+                         ->appendHttpEquiv('content-script-type', 'text/javascript')
+                         ->appendHttpEquiv('content-type', 'text/html; charset=utf-8')
+                         ->appendHttpEquiv('imagetoolbar', 'no')
+                         ->appendName('MSSmartTagsPreventParsing', 'true');
+        if (APPLICATION_ENV != 'production') {
+            $this->headMeta()->appendHttpEquiv('cache-control', 'no-cache')
+                             ->appendHttpEquiv('pragma', 'no-cache');
+        }
+        echo $this->headMeta();
+
+        // Titre
+        echo $this->headTitle('Example.com')->setSeparator(' - ');
+
+        // Feuilles de style, favicon
+        echo $this->headLink(
+            array(
+                'rel'  => 'shortcut icon',
+                'href' => '/favicon.ico',
+                'type' => 'image/x-icon',
+            )
+        )->appendStylesheet(
+            '/css/style.css',
+            'screen,projection'
+        );
+
+        // Javascripts
+        echo $this->headScript();
+        ?>
+    </head>
+
+    <body>
+        <?php
+        echo $this->layout()->content;
+        echo $this->inlineScript();
+        ?>
+    </body>
+</html>

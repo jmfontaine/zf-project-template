@@ -1,0 +1,9 @@
+<?php if (count($this->paginator)): ?>
+    <ul>
+    <?php foreach ($this->paginator as $item): ?>
+      <li><?php echo $item->getFullName(); ?></li>
+    <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+
+<?php echo $this->paginationControl($this->paginator); ?>

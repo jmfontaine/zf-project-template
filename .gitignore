@@ -1,0 +1,16 @@
+# Eclipse
+/.settings
+/.buildpath
+/.project
+
+# Application
+/application/configs/application-local.ini
+/application/configs/vhost.conf
+/application/data/cache/database/*
+/application/data/cache/locale/*
+/application/data/cache/translations/*
+/application/data/logs/*
+/application/data/sessions/*
+
+# Git
+!.gitkeep

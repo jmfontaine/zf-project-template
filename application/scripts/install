@@ -1,0 +1,38 @@
+#!/bin/sh
+
+###############################################################################
+# Effectue les manipulation nécessaires lors de la mise en place d'une copie  #
+# locale de l'application                                                     #
+###############################################################################
+
+ROOT_PATH=`pwd`/..
+
+echo - Create cache folders
+CACHE_PATH=$ROOT_PATH/data/cache
+if [ ! -d $CACHE_PATH ]; then
+    mkdir $CACHE_PATH
+fi
+if [ ! -d $CACHE_PATH/database ]; then
+    mkdir $CACHE_PATH/database
+fi
+if [ ! -d $CACHE_PATH/locale ]; then
+    mkdir $CACHE_PATH/locale
+fi
+if [ ! -d $CACHE_PATH/translations ]; then
+    mkdir $CACHE_PATH/translations
+fi
+
+echo - Create log folder
+if [ ! -d $ROOT_PATH/data/logs ]; then
+    mkdir $ROOT_PATH/data/logs
+fi
+
+echo - Create sessions folder
+if [ ! -d $ROOT_PATH/data/sessions ]; then
+    mkdir $ROOT_PATH/data/sessions
+fi
+
+echo - Change mode for cache, logs and sessions folders
+chmod -R 777 $ROOT_PATH/data/cache
+chmod -R 777 $ROOT_PATH/data/logs
+chmod -R 777 $ROOT_PATH/data/sessions

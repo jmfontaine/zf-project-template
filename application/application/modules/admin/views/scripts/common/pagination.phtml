@@ -1,0 +1,29 @@
+<?php if ($this->pageCount): ?>
+    <?php echo $this->firstItemNumber; ?> - <?php echo $this->lastItemNumber; ?> sur <?php echo $this->totalItemCount; ?>
+
+    <?php if (isset($this->previous)): ?>
+      <a href="<?php echo $this->url(array('page' => $this->first)); ?>">Premier</a> |
+    <?php else: ?>
+      Premier |
+    <?php endif; ?>
+
+    <?php if (isset($this->previous)): ?>
+      <a href="<?php echo $this->url(array('page' => $this->previous)); ?>">
+        &lt; Précédent
+      </a> |
+    <?php else: ?>
+      Précédent |
+    <?php endif; ?>
+
+    <?php if (isset($this->next)): ?>
+      <a href="<?php echo $this->url(array('page' => $this->next)); ?>">Suivant &gt;</a> |
+    <?php else: ?>
+      Suivant |
+    <?php endif; ?>
+
+    <?php if (isset($this->next)): ?>
+      <a href="<?php echo $this->url(array('page' => $this->last)); ?>">Dernier</a>
+    <?php else: ?>
+      Dernier
+    <?php endif; ?>
+<?php endif; ?>

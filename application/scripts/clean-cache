@@ -1,0 +1,16 @@
+#!/bin/sh
+
+###############################################################################
+# Vide les cahces de l'application                                            #
+###############################################################################
+
+CACHE_PATH=`pwd`/../data/cache
+if [ -d $CACHE_PATH/database ]; then
+    rm -rf $CACHE_PATH/database/*
+fi
+if [ -d $CACHE_PATH/locale ]; then
+    rm -rf $CACHE_PATH/locale/*
+fi
+if [ -d $CACHE_PATH/translations ]; then
+    rm -rf $CACHE_PATH/translations/*
+fi

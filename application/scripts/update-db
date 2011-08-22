@@ -1,0 +1,82 @@
+#!/usr/bin/env php
+<?php
+/******************************************************************************
+ * Met à jour la base de données en passant les scripts SQL qui n'ont pas     *
+ * déjà été passé sur le serveur MySQL                                        *                                             
+ ******************************************************************************/
+require_once __DIR__ . '/include/init.php';
+
+// Mise en place
+$application->bootstrap('db');
+$bootstrap = $application->getBootstrap();
+$db        = $bootstrap->getResource('db');
+
+// Récupération du numéro du dernier script passé
+$sql = 'SELECT `value`
+        FROM `application`
+        WHERE `key` = "lastSqlScriptRun"
+        LIMIT 1';
+try {
+    $row = $db->query($sql)->fetch();
+    if (false === $row) {
+        $lastSqlScriptRun = '0000';
+    } else {
+        $lastSqlScriptRun = $row['value'];
+    }
+} catch (Zend_Db_Exception $exception) {
+    if ('SQLSTATE[42S02]:' == substr($exception->getMessage(), 0, 16)) {
+        $lastSqlScriptRun = '0000';
+    } else {
+        echo "Fatal error : " . $exception->getMessage() . "\n\n";
+        exit(1);    
+    }
+}
+
+if ('0000' == $lastSqlScriptRun) {
+    echo "\nDatabase is empty\n\n"; 
+} else {
+    echo "\nCurrent script is $lastSqlScriptRun\n\n";
+}
+
+// Enumération et exécution des scripts disponibles
+$noScriptRun = true;
+$config      = $db->getConfig();
+$scriptDirectory = APPLICATION_PATH . '/../data/sql/update';
+foreach (glob("$scriptDirectory/*.sql") as $filename) {
+    $scriptNumber = substr(basename($filename), 0, 4);
+    if ($scriptNumber <= $lastSqlScriptRun) {
+        continue;
+    }
+    
+    echo basename($filename);
+    $command = sprintf(
+        'mysql -h %s -u %s %s < %s',
+        escapeshellarg($config['host']),
+        escapeshellarg($config['username']),
+        escapeshellarg($config['dbname']),
+        escapeshellarg($filename)
+    );
+    if (!empty($config['password'])) {
+        $command .= ' -p' . escapeshellarg($config['password']);
+    }
+    $command .= ' 2>&1';
+        
+    exec($command, $output, $returnValue);
+    if (0 != $returnValue) {
+        echo " : ERREUR\n";
+        echo implode("\n", $output);
+        echo "\n";
+        exit($returnValue);
+    } else {
+        $noScriptRun = false;
+        echo " : OK\n";
+    }
+}
+
+if (true === $noScriptRun) {
+    echo "Nothing to update\n";
+}
+echo "\n";
+
+exit(0);
+?>

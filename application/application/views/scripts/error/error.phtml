@@ -1,0 +1,15 @@
+<h1>Une erreur est survenue</h1>
+<h2><?php echo $this->message ?></h2>
+
+<?php if (isset($this->exception)): ?>
+    <h3>Exception :</h3>
+    <p>
+      <strong>Message :</strong> <?php echo $this->exception->getMessage() ?>
+    </p>
+
+    <h3>Pile d'appels :</h3>
+    <pre><?php echo $this->exception->getTraceAsString() ?></pre>
+
+    <h3>Paramètres de la requête :</h3>
+    <pre><?php echo var_export($this->request->getParams(), true) ?></pre>
+<?php endif ?>
